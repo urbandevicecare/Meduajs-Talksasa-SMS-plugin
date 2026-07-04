@@ -1,0 +1,43 @@
+{
+  "name": "medusajs-talksasa-sms-plugin",
+  "version": "1.0.0",
+  "description": "Talksasa SMS Notification Provider for MedusaJS",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "files": [
+    "dist",
+    "package.json",
+    "README.md"
+  ],
+  "scripts": {
+    "build": "tsc"
+  },
+  "keywords": [
+    "medusa",
+    "medusa-plugin",
+    "medusa-notification",
+    "medusa-v2",
+    "talksasa",
+    "sms",
+    "notification",
+    "ecommerce"
+  ],
+  "author": "Medusa Community",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/your-username/medusa-plugin-talksasa-sms.git"
+  },
+  "bugs": {
+    "url": "https://github.com/your-username/medusa-plugin-talksasa-sms/issues"
+  },
+  "dependencies": {},
+  "devDependencies": {
+    "@medusajs/framework": "^2.0.0",
+    "@medusajs/types": "^2.0.0",
+    "typescript": "^5.3.3"
+  },
+  "peerDependencies": {
+    "@medusajs/framework": "^2.0.0"
+  }
+}
