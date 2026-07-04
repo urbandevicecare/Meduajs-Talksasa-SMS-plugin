@@ -4,6 +4,7 @@ on:
   push:
     branches:
       - main # Triggers whenever you push or merge to the main branch
+  workflow_dispatch: # Allows you to trigger it manually from a button on GitHub
 
 jobs:
   build-and-publish:
