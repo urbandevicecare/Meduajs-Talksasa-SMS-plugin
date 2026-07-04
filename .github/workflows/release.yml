@@ -1,0 +1,63 @@
+name: Publish and Release
+
+on:
+  push:
+    branches:
+      - main # Triggers whenever you push or merge to the main branch
+
+jobs:
+  build-and-publish:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write # Needed to create tags and GitHub Releases
+
+    steps:
+      - name: Checkout Source Code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0 # Fetches full history so it can compare versions
+
+      - name: Check for package.json version change
+        id: check
+        uses: EndBug/version-check@v2
+        with:
+          diff-search: true
+
+      - name: Setup Node.js
+        if: steps.check.outputs.changed == 'true'
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18.x'
+          registry-url: 'https://registry.npmjs.org'
+
+      - name: Install Dependencies
+        if: steps.check.outputs.changed == 'true'
+        run: npm install
+
+      - name: Build Plugin
+        if: steps.check.outputs.changed == 'true'
+        run: npm run build
+
+      - name: Create NPM Package Tarball (.tgz)
+        if: steps.check.outputs.changed == 'true'
+        run: npm pack
+
+      - name: Zip the built plugin
+        if: steps.check.outputs.changed == 'true'
+        run: zip -r release.zip dist package.json README.md
+
+      - name: Publish to NPM
+        if: steps.check.outputs.changed == 'true'
+        run: npm publish
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+
+      - name: Create Git Tag and GitHub Release
+        if: steps.check.outputs.changed == 'true'
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: v${{ steps.check.outputs.version }}
+          generate_release_notes: true
+          files: |
+            *.tgz
+            release.zip
